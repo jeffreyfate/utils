@@ -3,15 +3,13 @@ package com.jeffthefate.utils.test;
 import com.jeffthefate.utils.ParseUtils;
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.apache.log4j.*;
-import org.codehaus.jackson.JsonNode;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
-import org.omg.PortableServer.POAPackage.ObjectNotActive;
 
-/**
- * Created by Jeff on 6/16/2014.
- */
 public class ParseUtilsTest extends TestCase {
 
     private String testAppId = "6pJz1oVHAwZ7tfOuvHfQCRz6AVKZzg1itFVfzx2q";
