@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
  * A failure is indicated to users by returning null, so checking for null is
  * required to check that something failed.
  */
-public class ParseUtils {
+public class Parse {
 
     private final String urlBase = "https://api.parse.com/1/classes/";
     private final String pushBase = "https://api.parse.com/1/push/";
@@ -51,7 +51,7 @@ public class ParseUtils {
 
     private HttpClient httpClient = HttpClientBuilder.create().build();
 
-    private Logger logger = Logger.getLogger(ParseUtils.class);
+    private Logger logger = Logger.getLogger(Parse.class);
 
     /**
      * Create instance with required headers.
@@ -59,7 +59,7 @@ public class ParseUtils {
      * @param appId     ID for the app to interact with
      * @param restApi   REST API key for the app to interact with
      */
-    public ParseUtils(String appId, String restApi) {
+    public Parse(String appId, String restApi) {
         appIdHeader = new BasicHeader(appIdKey, appId);
         restApiHeader = new BasicHeader(restApiKey, restApi);
         contentTypeHeader = new BasicHeader("Content-Type", "application/json");
@@ -74,6 +74,27 @@ public class ParseUtils {
     public String get(String className, String queryString) {
         HttpGet httpGet = new HttpGet(combineUrl(urlBase, className,
                 queryString));
+        httpGet.addHeader(appIdHeader);
+        httpGet.addHeader(restApiHeader);
+        httpGet.addHeader(contentTypeHeader);
+        HttpResponse httpResponse = getResponse(httpGet);
+        if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+            logger.error("Get did not fetch successfully!");
+            logger.error(httpResponse.getStatusLine().getReasonPhrase());
+            return null;
+        }
+        return getResponseString(httpResponse);
+    }
+    /**
+     * Perform a HTTP GET on a given class with a given object.
+     *
+     * @param className     name of class to interact with
+     * @param objectId      ID of object to fetch
+     * @return              response string from the GET; null if error
+     */
+    public String getObject(String className, String objectId) {
+        HttpGet httpGet = new HttpGet(combineUrl(urlBase, className, "/",
+                objectId));
         httpGet.addHeader(appIdHeader);
         httpGet.addHeader(restApiHeader);
         httpGet.addHeader(contentTypeHeader);
@@ -128,10 +149,33 @@ public class ParseUtils {
             httpPost.setEntity(new StringEntity(data, ContentType.APPLICATION_JSON));
         } catch (Exception e) {
             logger.error("Bad data!");
+            return null;
         }
         HttpResponse httpResponse = getResponse(httpPost);
         if (httpResponse.getStatusLine().getStatusCode() != HttpStatus
                 .SC_CREATED) {
+            logger.error("Post did not create object!");
+            logger.error(httpResponse.getStatusLine().getReasonPhrase());
+            return null;
+        }
+        return getResponseString(httpResponse);
+    }
+
+    public String postPush(String json) {
+        HttpPost httpPost = new HttpPost(combineUrl(pushBase));
+        httpPost.addHeader(appIdHeader);
+        httpPost.addHeader(restApiHeader);
+        httpPost.addHeader(contentTypeHeader);
+        try {
+            httpPost.setEntity(new StringEntity(json,
+                    ContentType.APPLICATION_JSON));
+        } catch (Exception e) {
+            logger.error("Bad data!");
+            return null;
+        }
+        HttpResponse httpResponse = getResponse(httpPost);
+        if (httpResponse.getStatusLine().getStatusCode() != HttpStatus
+                .SC_OK) {
             logger.error("Post did not create object!");
             logger.error(httpResponse.getStatusLine().getReasonPhrase());
             return null;
