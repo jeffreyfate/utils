@@ -15,6 +15,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 /**
  * Utility functions that interact with the Parse web backend.
@@ -122,7 +124,8 @@ public class Parse {
         try {
             httpPut.setEntity(new StringEntity(data, ContentType.APPLICATION_JSON));
         } catch (Exception e) {
-            logger.error("Bad data!");
+            logger.error("Bad data!", e);
+            return null;
         }
         HttpResponse httpResponse = getResponse(httpPut);
         if (httpResponse.getStatusLine().getStatusCode() != HttpStatus
@@ -232,6 +235,17 @@ public class Parse {
             }
         }
         return response;
+    }
+
+    /**
+     * Mark a single trivia question with a given trivia level.
+     */
+    public boolean markAsTrivia(String objectId, int triviaLevel) {
+        logger.info("Marking question " + objectId + " to " + triviaLevel);
+        JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
+        ObjectNode rootNode = jsonNodeFactory.objectNode();
+        rootNode.put("trivia", triviaLevel);
+        return put("Question", objectId, rootNode.toString()) != null;
     }
 
 }

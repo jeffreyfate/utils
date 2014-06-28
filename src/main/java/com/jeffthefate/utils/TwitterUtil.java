@@ -26,26 +26,19 @@ public class TwitterUtil {
             File file, long replyTo) {
         Twitter twitter = new TwitterFactory(twitterConfig).getInstance();
         StatusUpdate statusUpdate = new StatusUpdate(message);
-        if (file != null)
+        if (file != null) {
             statusUpdate.media(file);
+        }
         statusUpdate.setInReplyToStatusId(replyTo);
         Status status = null;
-        int tries = 0;
-        do {
-            tries++;
-            try {
-                status = twitter.updateStatus(statusUpdate);
-            } catch (TwitterException e) {
-                logger.info("Failed to get timeline: " +
-                        e.getMessage());
-                e.printStackTrace();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ie) {
-                    logger.error("Wait to tweet interrupted!");
-                }
-            }
-        } while (status == null && tries < 5);
+        try {
+            status = twitter.updateStatus(statusUpdate);
+        } catch (TwitterException e) {
+            logger.info("Failed to get timeline: " + e.getMessage());
+            e.printStackTrace();
+            sendDirectMessage(twitterConfig, "Copperpot5",
+                    "Error updating status! Check the log");
+        }
         return status;
     }
 

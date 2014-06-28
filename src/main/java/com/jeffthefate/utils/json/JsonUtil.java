@@ -52,6 +52,16 @@ public class JsonUtil {
         return null;
     }
 
+    public QuestionResults getQuestionResults(String json) {
+        try {
+            return objectMapper.readValue(json, QuestionResults.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Results!");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Song getSong(String json) {
         try {
             return objectMapper.readValue(json, Song.class);
@@ -77,6 +87,26 @@ public class JsonUtil {
             return objectMapper.readValue(json, Created.class);
         } catch (IOException e) {
             logger.error("Unable to parse JSON to Results!");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Venue getVenue(String json) {
+        try {
+            return objectMapper.readValue(json, Venue.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Results!");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Count getCount(String json) {
+        try {
+            return objectMapper.readValue(json, Count.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
             e.printStackTrace();
         }
         return null;

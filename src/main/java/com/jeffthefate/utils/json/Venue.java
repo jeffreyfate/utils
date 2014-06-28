@@ -5,25 +5,44 @@ package com.jeffthefate.utils.json;
  */
 public class Venue {
 
-    private String __type;
-    private String className;
+    private String createdAt;
+    private String updatedAt;
     private String objectId;
+    private String city;
 
-    public String get__type() {
-        return __type;
+    public String getName() {
+        return name;
     }
 
-    public void set__type(String __type) {
-        this.__type = __type;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getClassName() {
-        return className;
+    public String getCity() {
+        return city;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setCity(String city) {
+        this.city = city;
     }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    private String name;
 
     public String getObjectId() {
         return objectId;
@@ -35,8 +54,9 @@ public class Venue {
 
     @Override
     public String toString() {
-        return "__type: " + get__type() + ", className: " + getClassName() +
-                ", objectId: " + getObjectId();
+        return "city: " + getCity() + ", name: " + getName() + ", objectId: " +
+                getObjectId() + ", createdAt: " + getCreatedAt() +
+                ", updatedAt: " + getUpdatedAt();
     }
 
 }

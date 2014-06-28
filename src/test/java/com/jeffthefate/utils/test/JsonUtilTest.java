@@ -1,6 +1,7 @@
 package com.jeffthefate.utils.test;
 
 import com.jeffthefate.utils.json.JsonUtil;
+import com.jeffthefate.utils.json.QuestionResults;
 import com.jeffthefate.utils.json.SetlistResults;
 import com.jeffthefate.utils.json.SongResults;
 import junit.framework.TestCase;
@@ -24,6 +25,19 @@ public class JsonUtilTest extends TestCase {
         String resultsString = "{\"results\":[]}";
         SongResults songResults = jsonUtil.getSongResults(resultsString);
         System.out.println(songResults.getResults());
+    }
+
+    public void testGetQuestionResultsNullScore() {
+        JsonUtil jsonUtil = JsonUtil.instance();
+        String resultsString = "{\"results\":[{\"answer\":\"Away From The " +
+                "World\",\"category\":\"Albums\",\"question\":\"What album " +
+                "was released on September 11th, 2012?\",\"score\":null," +
+                "\"trivia\":1,\"createdAt\":\"2012-11-28T22:09:22.040Z\"," +
+                "\"updatedAt\":\"2014-05-21T00:32:57.987Z\"," +
+                "\"objectId\":\"0A8EFRHoqk\"}]}";
+        QuestionResults questionResults = jsonUtil.getQuestionResults(
+                resultsString);
+        System.out.println(questionResults.getResults());
     }
 
 }
