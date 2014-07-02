@@ -129,4 +129,14 @@ public class JsonUtil {
         return null;
     }
 
+    public CredentialResults getCredentialResults(String json) {
+        try {
+            return objectMapper.readValue(json, CredentialResults.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

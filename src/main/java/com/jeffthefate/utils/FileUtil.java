@@ -24,7 +24,41 @@ public class FileUtil {
         return fileUtil;
     }
 
-    public boolean saveToFile(String filename, List<String> list) {
+    public boolean saveHashMapToFile(String filename,
+            HashMap<String, String> map) {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(filename);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                    fileOutputStream);
+            objectOutputStream.writeObject(map);
+            objectOutputStream.close();
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public HashMap<String, String> readHashMapFromFile(String filename) {
+        HashMap<String, String> map;
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filename);
+            ObjectInputStream objectInputStream = new ObjectInputStream(
+                    fileInputStream);
+            map = (HashMap<String, String>) objectInputStream.readObject();
+            objectInputStream.close();
+            fileInputStream.close();
+        } catch (FileNotFoundException e) {
+            return new HashMap<String, String>(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return map;
+    }
+
+    public boolean saveListToFile(String filename, List<String> list) {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(filename);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(
@@ -39,7 +73,7 @@ public class FileUtil {
         return true;
     }
 
-    public List<String> readFromFile(String filename) {
+    public List<String> readListFromFile(String filename) {
         List<String> banList;
         try {
             FileInputStream fileInputStream = new FileInputStream(filename);

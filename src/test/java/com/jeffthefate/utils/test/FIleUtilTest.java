@@ -16,8 +16,8 @@ public class FIleUtilTest extends TestCase {
     public void testSaveReadFile() {
         List<String> testList = new ArrayList<String>();
         testList.add("test");
-        assertTrue("Save failed!", fileUtil.saveToFile("testFile", testList));
-        List<String> resultList = fileUtil.readFromFile("testFile");
+        assertTrue("Save failed!", fileUtil.saveListToFile("testFile", testList));
+        List<String> resultList = fileUtil.readListFromFile("testFile");
         assertNotNull("List read is null!", resultList);
         assertTrue("Lists are not the same!", resultList.containsAll(testList)
                 && testList.containsAll(resultList));
