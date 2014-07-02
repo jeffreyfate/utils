@@ -9,14 +9,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-/**
- * Created by Jeff on 6/18/2014.
- */
 public class FileUtil {
 
     private static FileUtil fileUtil;
@@ -169,6 +163,17 @@ public class FileUtil {
             charBuffer = decoder.decode(srcBuffer);
         } catch (CharacterCodingException e) {}
         return charBuffer;
+    }
+
+    public ArrayList<String> getListOfFiles(String parentDir,
+                                         final String filter) {
+        File dir = new File(parentDir);
+        String[] files = dir.list(new FilenameFilter() {
+            public boolean accept(File dir, String filename) {
+                return filename.endsWith(filter);
+            }
+        });
+        return new ArrayList<String>(Arrays.asList(files));
     }
 
 }

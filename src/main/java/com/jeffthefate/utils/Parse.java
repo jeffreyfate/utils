@@ -230,7 +230,7 @@ public class Parse {
             try {
                 response = EntityUtils.toString(entity);
             } catch (Exception e) {
-                logger.error("Failed parsing response tring from entity!", e);
+                logger.error("Failed parsing response string from entity!", e);
                 e.printStackTrace();
             }
         }

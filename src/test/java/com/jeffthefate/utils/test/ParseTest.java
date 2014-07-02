@@ -74,7 +74,7 @@ public class ParseTest extends TestCase {
     public void testGetObject() {
         // A real app ID and REST Api combination
         Parse parse = new Parse(testAppId, testRestApi);
-        String response = parse.getObject("Setlist", "JB6fOawDj9");
+        String response = parse.getObject("Setlist", "hVAIYCTXhv");
         Assert.assertNotNull("Get failed!", response);
     }
 
@@ -85,7 +85,7 @@ public class ParseTest extends TestCase {
         JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
         ObjectNode rootNode = jsonNodeFactory.objectNode();
         rootNode.put("test", "test");
-        String response = parse.put("Setlist", "JB6fOawDj9",
+        String response = parse.put("Setlist", "hVAIYCTXhv",
                 rootNode.toString());
         Assert.assertNotNull("Put failed!", response);
     }
@@ -94,7 +94,7 @@ public class ParseTest extends TestCase {
         // A real app ID and REST Api combination
         Parse parse = new Parse(testAppId, testRestApi);
         // An existing object
-        String response = parse.put("Setlist", "JB6fOawDj9", "");
+        String response = parse.put("Setlist", "hVAIYCTXhv", "");
         Assert.assertNull("Put succeeded!", response);
     }
 
@@ -102,7 +102,7 @@ public class ParseTest extends TestCase {
         // A real app ID and REST Api combination
         Parse parse = new Parse(testAppId, testRestApi);
         // An existing object
-        String response = parse.put("Setlist", "JB6fOawDj9", null);
+        String response = parse.put("Setlist", "hVAIYCTXhv", null);
         Assert.assertNull("Put succeeded!", response);
     }
 
@@ -113,7 +113,7 @@ public class ParseTest extends TestCase {
         JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
         ObjectNode rootNode = jsonNodeFactory.objectNode();
         rootNode.put("test", "test");
-        String response = parse.put("Setlist", "JB6fOawDj9",
+        String response = parse.put("Setlist", "hVAIYCTXhv",
                 rootNode.toString());
         Assert.assertNull("Put succeeded!", response);
     }

@@ -3,11 +3,9 @@ package com.jeffthefate.utils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
-/**
- * Created by Jeff on 6/18/2014.
- */
 public class GameUtil {
 
     private static GameUtil gameUtil;
@@ -503,4 +501,173 @@ public class GameUtil {
         songList.add(tempList);
         return songList;
     }
+
+    public ArrayList<ArrayList<String>> setupAnswerList() {
+        ArrayList<ArrayList<String>> answerList = new
+                ArrayList<ArrayList<String>>(0);
+        ArrayList<String> tempList = new ArrayList<String>(0);
+        tempList.add("dave");
+        tempList.add("dave matthews");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("boyd");
+        tempList.add("boyd tinsley");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("stefan");
+        tempList.add("stefan lessard");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("carter");
+        tempList.add("carter beauford");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("leroi");
+        tempList.add("leroi moore");
+        tempList.add("roi");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("butch");
+        tempList.add("butch taylor");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("tim");
+        tempList.add("tim reynolds");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("jeff");
+        tempList.add("jeff coffin");
+        tempList.add("coffin");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("rashawn");
+        tempList.add("rashawn ross");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("lillywhite");
+        tempList.add("steve lillywhite");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("lawlor");
+        tempList.add("joe lawlor");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("fenton");
+        tempList.add("fenton williams");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("peter");
+        tempList.add("peter griesar");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("sax");
+        tempList.add("saxophone");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("alpine");
+        tempList.add("alpine valley");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("big whiskey and the groogrux king");
+        tempList.add("big whiskey");
+        tempList.add("big whiskey & the groogrux king");
+        tempList.add("bwggk");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("stay");
+        tempList.add("stay (wasting time)");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("you and me");
+        tempList.add("you & me");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("rhyme and reason");
+        tempList.add("rhyme & reason");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("funny the way it is");
+        tempList.add("ftwii");
+        tempList.add("funny");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("sweet up & down");
+        tempList.add("sweet up and down");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("billies");
+        tempList.add("tripping billies");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("bela fleck and the flecktones");
+        tempList.add("bela fleck & the flecktones");
+        tempList.add("the flecktones");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("any noise");
+        tempList.add("any noise/anti-noise");
+        tempList.add("any noise anti-noise");
+        tempList.add("any noise anti noise");
+        tempList.add("any noise antinoise");
+        tempList.add("anynoise antinoise");
+        answerList.add(tempList);
+        tempList = new ArrayList<String>(0);
+        tempList.add("dreamgirl");
+        tempList.add("dream girl");
+        answerList.add(tempList);
+        return answerList;
+		/*
+		 * answerList.put("dave", "dave matthews"); answerList.put("boyd",
+		 * "boyd tinsley"); answerList.put("stefan", "stefan lessard");
+		 * answerList.put("carter", "carter beauford"); answerList.put("leroi moore",
+		 * "leroi"); answerList.put("roi", "leroi moore"); answerList.put("leroi",
+		 * "roi"); answerList.put("butch", "butch taylor"); answerList.put("tim",
+		 * "tim reynolds"); answerList.put("jeff", "jeff coffin");
+		 * answerList.put("jeff coffin", "coffin"); answerList.put("rashawn",
+		 * "rashawn ross"); answerList.put("lillywhite", "steve lillywhite");
+		 * acronymMap.put("btcs", "before these crowded streets");
+		 * acronymMap.put("uttad", "under the table and dreaming");
+		 * answerList.put("sax", "saxophone"); acronymMap.put("watchtower",
+		 * "all along the watchtower"); acronymMap.put("hunger",
+		 * "hunger for the great light"); acronymMap.put("crash",
+		 * "crash into me"); acronymMap.put("nancies", "dancing nancies");
+		 * acronymMap.put("big whiskey", "big whiskey and the groogrux king");
+		 * acronymMap.put("msg", "madison square garden"); answerList.put("alpine",
+		 * "alpine valley"); acronymMap.put("wpb", "west palm beach");
+		 */
+    }
+
+    public HashMap<String, String> createAcronymMap() {
+        HashMap<String, String> acronymMap = new HashMap<String, String>();
+        acronymMap.put("btcs", "before these crowded streets");
+        acronymMap.put("uttad", "under the table and dreaming");
+        acronymMap.put("watchtower", "all along the watchtower");
+        acronymMap.put("hunger", "hunger for the great light");
+        acronymMap.put("crash", "crash into me");
+        acronymMap.put("nancies", "dancing nancies");
+        acronymMap.put("msg", "madison square garden");
+        acronymMap.put("wpb", "west palm beach");
+        acronymMap.put("ddtw", "dont drink the water");
+        return acronymMap;
+    }
+
+    public ArrayList<String> createReplaceList() {
+        ArrayList<String> replaceList = new ArrayList<String>(0);
+        replaceList.add("the ");
+        replaceList.add("his ");
+        replaceList.add("her ");
+        return replaceList;
+    }
+
+    public ArrayList<String> createTipList() {
+        ArrayList<String> tipList = new ArrayList<String>(0);
+        tipList.add("Scoring: #1 - Full points, #2 - 3/4 points, " +
+                "#3 - 1/2 points\nIf you protect tweets we must follow you to" +
+                " play (ask us)");
+        tipList.add("You won't see people guess who protect their tweets unless you follow each other");
+        tipList.add("Only one guess per person is accepted for each question");
+        tipList.add("Note: We have a free DMB Trivia & Setlist app in the Google Play Store https://play.google.com/store/apps/details?id=com.jeffthefate.dmbquiz");
+        return tipList;
+    }
+
 }
