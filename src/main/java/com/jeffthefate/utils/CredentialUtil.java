@@ -2,11 +2,13 @@ package com.jeffthefate.utils;
 
 import com.jeffthefate.utils.json.Credential;
 import com.jeffthefate.utils.json.JsonUtil;
+import org.apache.log4j.Logger;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class CredentialUtil {
@@ -17,6 +19,8 @@ public class CredentialUtil {
     private static CredentialUtil credentialUtil;
     private static FileUtil fileUtil;
     private static JsonUtil jsonUtil;
+
+    private Logger logger = Logger.getLogger(CredentialUtil.class);
 
     public static CredentialUtil instance() {
         if (credentialUtil == null) {
@@ -32,7 +36,7 @@ public class CredentialUtil {
     }
 
     public Parse getCredentialedParse(boolean isDev) {
-        HashMap<String, String> credentialsMap = fileUtil.readHashMapFromFile(
+        HashMap<Object, Object> credentialsMap = fileUtil.readHashMapFromFile(
                 CREDENTIAL_FILE);
         if (credentialsMap.isEmpty()) {
             credentialsMap.put("devAppId",
@@ -45,10 +49,15 @@ public class CredentialUtil {
                     "1smRSlfAvbFg4AsDxat1yZ3xknHQbyhzZ4msAi5w");
             fileUtil.saveHashMapToFile(CREDENTIAL_FILE, credentialsMap);
         }
-        return new Parse(isDev ? credentialsMap.get("devAppId") :
-                credentialsMap.get("prodAppId"), isDev ?
-                credentialsMap.get("devRestKey") :
-                credentialsMap.get("prodAppId"));
+        try {
+            return new Parse(isDev ? credentialsMap.get("devAppId") :
+                    credentialsMap.get("prodAppId"), isDev ?
+                    credentialsMap.get("devRestKey") :
+                    credentialsMap.get("prodAppId"));
+        } catch (InputMismatchException e) {
+            logger.error("A parameter was something other than a string!", e);
+            return null;
+        }
     }
 
     public Configuration getCredentialedTwitter(Parse parse, boolean isGame) {
@@ -66,35 +75,37 @@ public class CredentialUtil {
         List<Credential> credentialList = jsonUtil.getCredentialResults(
                 response).getResults();
         for (Credential credential : credentialList) {
-            if (credential.getName().equals("setlistKey")) {
-                SETLIST_KEY = credential.getValue();
-            }
-            else if (credential.getName().equals("setlistSecret")) {
-                SETLIST_SECRET = credential.getValue();
-            }
-            else if (credential.getName().equals("setlistAccessToken")) {
-                SETLIST_ACCESS_TOKEN = credential.getValue();
-            }
-            else if (credential.getName().equals("setlistAccessSecret")) {
-                SETLIST_ACCESS_SECRET = credential.getValue();
-            }
-            else if (credential.getName().equals("setlistAccount")) {
-                SETLIST_ACCOUNT = credential.getValue();
-            }
-            else if (credential.getName().equals("gameKey")) {
-                GAME_KEY = credential.getValue();
-            }
-            else if (credential.getName().equals("gameSecret")) {
-                GAME_SECRET = credential.getValue();
-            }
-            else if (credential.getName().equals("gameAccessToken")) {
-                GAME_ACCESS_TOKEN = credential.getValue();
-            }
-            else if (credential.getName().equals("gameAccessSecret")) {
-                GAME_ACCESS_SECRET = credential.getValue();
-            }
-            else if (credential.getName().equals("gameAccount")) {
-                GAME_ACCOUNT = credential.getValue();
+            switch(credential.getName()) {
+                case "setlistKey":
+                    SETLIST_KEY = credential.getValue();
+                    break;
+                case "setlistSecret":
+                    SETLIST_SECRET = credential.getValue();
+                    break;
+                case "setlistAccessToken":
+                    SETLIST_ACCESS_TOKEN = credential.getValue();
+                    break;
+                case "setlistAccessSecret":
+                    SETLIST_ACCESS_SECRET = credential.getValue();
+                    break;
+                case "setlistAccount":
+                    SETLIST_ACCOUNT = credential.getValue();
+                    break;
+                case "gameKey":
+                    GAME_KEY = credential.getValue();
+                    break;
+                case "gameSecret":
+                    GAME_SECRET = credential.getValue();
+                    break;
+                case "gameAccessToken":
+                    GAME_ACCESS_TOKEN = credential.getValue();
+                    break;
+                case "gameAccessSecret":
+                    GAME_ACCESS_SECRET = credential.getValue();
+                    break;
+                case "gameAccount":
+                    GAME_ACCOUNT = credential.getValue();
+                    break;
             }
         }
         if (SETLIST_KEY != null && SETLIST_SECRET != null &&

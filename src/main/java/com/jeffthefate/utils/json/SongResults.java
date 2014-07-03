@@ -2,9 +2,6 @@ package com.jeffthefate.utils.json;
 
 import java.util.List;
 
-/**
- * Created by Jeff on 6/19/2014.
- */
 public class SongResults {
 
     private List<Song> results;
@@ -13,7 +10,7 @@ public class SongResults {
         return results;
     }
 
-    public void setResults(List<Setlist> Song) {
+    public void setResults(List<Song> results) {
         this.results = results;
     }
 

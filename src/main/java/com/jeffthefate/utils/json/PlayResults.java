@@ -2,9 +2,6 @@ package com.jeffthefate.utils.json;
 
 import java.util.List;
 
-/**
- * Created by Jeff on 6/19/2014.
- */
 public class PlayResults {
 
     private List<Play> results;

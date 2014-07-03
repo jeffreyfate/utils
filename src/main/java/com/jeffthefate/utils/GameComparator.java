@@ -16,7 +16,7 @@ public class GameComparator implements Comparator<String> {
     public int compare(String a, String b) {
         if (base.get(a) < base.get(b)) {
             return 1;
-        } else if (base.get(a) == base.get(b)) {
+        } else if (base.get(a).equals(base.get(b))) {
             return a.compareToIgnoreCase(b);
         } else {
             return -1;

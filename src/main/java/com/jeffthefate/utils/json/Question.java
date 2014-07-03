@@ -1,8 +1,5 @@
 package com.jeffthefate.utils.json;
 
-/**
- * Created by Jeff on 6/28/2014.
- */
 public class Question {
 
     private String answer;

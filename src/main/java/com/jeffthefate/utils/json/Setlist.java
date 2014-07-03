@@ -1,9 +1,6 @@
 package com.jeffthefate.utils.json;
 
-/**
- * Created by Jeff on 6/19/2014.
- */
-public class Setlist extends Result {
+public class Setlist {
 
     private Pointer venue;
     private String set;

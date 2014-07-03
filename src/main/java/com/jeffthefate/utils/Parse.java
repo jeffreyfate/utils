@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 
+import java.util.InputMismatchException;
+
 /**
  * Utility functions that interact with the Parse web backend.
  * </p>
@@ -27,9 +29,6 @@ import org.codehaus.jackson.node.ObjectNode;
 public class Parse {
 
     private final String urlBase = "https://api.parse.com/1/classes/";
-    private final String pushBase = "https://api.parse.com/1/push/";
-    private final String appIdKey = "X-Parse-Application-Id";
-    private final String restApiKey = "X-Parse-REST-API-Key";
 
     public Header getAppIdHeader() {
         return appIdHeader;
@@ -61,9 +60,21 @@ public class Parse {
      * @param appId     ID for the app to interact with
      * @param restApi   REST API key for the app to interact with
      */
-    public Parse(String appId, String restApi) {
-        appIdHeader = new BasicHeader(appIdKey, appId);
-        restApiHeader = new BasicHeader(restApiKey, restApi);
+    public Parse(Object appId, Object restApi) throws InputMismatchException {
+        final String appIdKey = "X-Parse-Application-Id";
+        final String restApiKey = "X-Parse-REST-API-Key";
+        if (appId instanceof String) {
+            appIdHeader = new BasicHeader(appIdKey, (String) appId);
+        }
+        else {
+            throw new InputMismatchException("The appId is not a string!");
+        }
+        if (restApi instanceof String) {
+            restApiHeader = new BasicHeader(restApiKey, (String) restApi);
+        }
+        else {
+            throw new InputMismatchException("The restApi is not a string!");
+        }
         contentTypeHeader = new BasicHeader("Content-Type", "application/json");
     }
     /**
@@ -165,6 +176,7 @@ public class Parse {
     }
 
     public String postPush(String json) {
+        final String pushBase = "https://api.parse.com/1/push/";
         HttpPost httpPost = new HttpPost(combineUrl(pushBase));
         httpPost.addHeader(appIdHeader);
         httpPost.addHeader(restApiHeader);

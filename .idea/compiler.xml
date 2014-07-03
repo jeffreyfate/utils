@@ -26,6 +26,9 @@
         <module name="venue" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="utils" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
 

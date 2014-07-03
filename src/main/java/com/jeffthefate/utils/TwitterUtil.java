@@ -6,9 +6,6 @@ import twitter4j.conf.Configuration;
 
 import java.io.File;
 
-/**
- * Created by Jeff on 6/18/2014.
- */
 public class TwitterUtil {
 
     private static TwitterUtil twitterUtil;

@@ -1,6 +1,5 @@
 package com.jeffthefate.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -9,7 +8,10 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class FileUtil {
 
@@ -25,7 +27,7 @@ public class FileUtil {
     }
 
     public boolean saveHashMapToFile(String filename,
-            HashMap<String, String> map) {
+            HashMap<Object, Object> map) {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(filename);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(
@@ -40,17 +42,17 @@ public class FileUtil {
         return true;
     }
 
-    public HashMap<String, String> readHashMapFromFile(String filename) {
-        HashMap<String, String> map;
+    public HashMap<Object, Object> readHashMapFromFile(String filename) {
+        HashMap<Object, Object> map;
         try {
             FileInputStream fileInputStream = new FileInputStream(filename);
             ObjectInputStream objectInputStream = new ObjectInputStream(
                     fileInputStream);
-            map = (HashMap<String, String>) objectInputStream.readObject();
+            map = (HashMap<Object, Object>) objectInputStream.readObject();
             objectInputStream.close();
             fileInputStream.close();
         } catch (FileNotFoundException e) {
-            return new HashMap<String, String>(0);
+            return new HashMap<>(0);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -58,7 +60,7 @@ public class FileUtil {
         return map;
     }
 
-    public boolean saveListToFile(String filename, List<String> list) {
+    public boolean saveListToFile(String filename, List<Object> list) {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(filename);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(
@@ -73,17 +75,17 @@ public class FileUtil {
         return true;
     }
 
-    public List<String> readListFromFile(String filename) {
-        List<String> banList;
+    public List<Object> readListFromFile(String filename) {
+        List<Object> banList;
         try {
             FileInputStream fileInputStream = new FileInputStream(filename);
             ObjectInputStream objectInputStream = new ObjectInputStream(
                     fileInputStream);
-            banList = (List<String>) objectInputStream.readObject();
+            banList = (List<Object>) objectInputStream.readObject();
             objectInputStream.close();
             fileInputStream.close();
         } catch (FileNotFoundException e) {
-            return new ArrayList<String>(0);
+            return new ArrayList<>(0);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -151,41 +153,7 @@ public class FileUtil {
 
     public void appendStringToFile(String output, String filename) {
         String old = readStringFromFile(filename);
-        StringBuilder sb = new StringBuilder();
-        sb.append(old);
-        sb.append(output);
-        sb.append("\n");
-        writeStringToFile(sb.toString(), filename);
-    }
-
-    public List<String> getListFromFile(String filename) {
-        String content = readStringFromFile(filename);
-        String[] questionIds = content.split("\n");
-        if (questionIds.length < 1)
-            return null;
-        List<String> questionList = new ArrayList<String>(0);
-        questionList.clear();
-        for (int i = 0; i < questionIds.length; i++) {
-            if (!StringUtils.isEmpty(questionIds[i]))
-                questionList.add(questionIds[i]);
-        }
-        return questionList;
-    }
-
-    public Map<String, Integer> getMapFromFile(String filename) {
-        String content = readStringFromFile(filename);
-        String[] scores = content.split("\n");
-        String[] user;
-        Map<String, Integer> scoreMap = new HashMap<String, Integer>();
-        for (int i = 0; i < scores.length; i++) {
-            if (!StringUtils.isEmpty(scores[i])) {
-                user = scores[i].split(" | ");
-                try {
-                    scoreMap.put(user[0], Integer.parseInt(user[1]));
-                } catch (NumberFormatException e) {}
-            }
-        }
-        return scoreMap;
+        writeStringToFile(old + output + "\n", filename);
     }
 
     private CharBuffer bytesToString(byte[] input) {
@@ -195,19 +163,21 @@ public class FileUtil {
         CharBuffer charBuffer = null;
         try {
             charBuffer = decoder.decode(srcBuffer);
-        } catch (CharacterCodingException e) {}
+        } catch (CharacterCodingException e) {
+            logger.error("Can't encode bytes to a string!", e);
+        }
         return charBuffer;
     }
 
     public ArrayList<String> getListOfFiles(String parentDir,
-                                         final String filter) {
+            final String filter) {
         File dir = new File(parentDir);
         String[] files = dir.list(new FilenameFilter() {
             public boolean accept(File dir, String filename) {
                 return filename.endsWith(filter);
             }
         });
-        return new ArrayList<String>(Arrays.asList(files));
+        return new ArrayList<>(Arrays.asList(files));
     }
 
 }
