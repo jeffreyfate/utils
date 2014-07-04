@@ -140,15 +140,10 @@ public class FileUtil {
         return buffer;
     }
 
-    public void appendListToFile(List<String> output, String filename) {
-        String old = readStringFromFile(filename);
-        StringBuilder sb = new StringBuilder();
-        sb.append(old);
-        for (String line : output) {
-            sb.append(line);
-            sb.append("\n");
-        }
-        writeStringToFile(sb.toString(), filename);
+    public void appendListToFile(List<Object> output, String filename) {
+        List<Object> old = readListFromFile(filename);
+        old.addAll(output);
+        saveListToFile(filename, old);
     }
 
     public void appendStringToFile(String output, String filename) {

@@ -53,7 +53,7 @@ public class CredentialUtil {
             return new Parse(isDev ? credentialsMap.get("devAppId") :
                     credentialsMap.get("prodAppId"), isDev ?
                     credentialsMap.get("devRestKey") :
-                    credentialsMap.get("prodAppId"));
+                    credentialsMap.get("prodRestKey"));
         } catch (InputMismatchException e) {
             logger.error("A parameter was something other than a string!", e);
             return null;
