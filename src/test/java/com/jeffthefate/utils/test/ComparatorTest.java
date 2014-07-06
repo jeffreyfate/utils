@@ -4,21 +4,25 @@ import com.jeffthefate.utils.GameComparator;
 import junit.framework.TestCase;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ComparatorTest extends TestCase {
 
     public void testGameComparator() {
-        HashMap<String, Integer> testMap = new HashMap<>();
+        HashMap<Object, Object> testMap = new HashMap<>();
         testMap.put("test1", 1);
         testMap.put("test2", 2);
         testMap.put("test3", 1);
         GameComparator gameComparator = new GameComparator(testMap);
-        assertTrue("Compare not correct!", gameComparator.compare("test1",
-                "test2") > 0);
-        assertTrue("Compare not correct!", gameComparator.compare("test1",
-                "test3") < 0);
-        assertTrue("Compare not correct!", gameComparator.compare("test2",
-                "test1") < 0);
+        TreeMap<Object, Object> sortedMap = new TreeMap<>(
+                gameComparator);
+        int currValue = Integer.MAX_VALUE;
+        for (Map.Entry<Object, Object> test : sortedMap.entrySet()) {
+            assertTrue("Compare not correct!", currValue >
+                    (Integer) test.getValue());
+            currValue = (Integer) test.getValue();
+        }
     }
 
 }

@@ -6,15 +6,11 @@ import org.apache.log4j.Logger;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
 
 public class CredentialUtil {
-
-    private final String CREDENTIAL_FILE = System.getProperty("user.dir") +
-            File.separator + "parseCreds";
 
     private static CredentialUtil credentialUtil;
     private static FileUtil fileUtil;
@@ -35,20 +31,9 @@ public class CredentialUtil {
         return credentialUtil;
     }
 
-    public Parse getCredentialedParse(boolean isDev) {
+    public Parse getCredentialedParse(boolean isDev, String credFile) {
         HashMap<Object, Object> credentialsMap = fileUtil.readHashMapFromFile(
-                CREDENTIAL_FILE);
-        if (credentialsMap.isEmpty()) {
-            credentialsMap.put("devAppId",
-                    "6pJz1oVHAwZ7tfOuvHfQCRz6AVKZzg1itFVfzx2q");
-            credentialsMap.put("devRestKey",
-                    "uNZMDvDSahtRxZVRwpUVwzAG9JdLzx4cbYnhYPi7");
-            credentialsMap.put("prodAppId",
-                    "ImI8mt1EM3NhZNRqYZOyQpNSwlfsswW73mHsZV3R");
-            credentialsMap.put("prodRestKey",
-                    "1smRSlfAvbFg4AsDxat1yZ3xknHQbyhzZ4msAi5w");
-            fileUtil.saveHashMapToFile(CREDENTIAL_FILE, credentialsMap);
-        }
+                credFile);
         try {
             return new Parse(isDev ? credentialsMap.get("devAppId") :
                     credentialsMap.get("prodAppId"), isDev ?

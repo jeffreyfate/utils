@@ -33,8 +33,8 @@ public class TwitterUtil {
         } catch (TwitterException e) {
             logger.info("Failed to get timeline: " + e.getMessage());
             e.printStackTrace();
-            sendDirectMessage(twitterConfig, "Copperpot5",
-                    "Error updating status! Check the log");
+            sendDirectMessage(twitterConfig, "jeffthefate",
+                    "Error updating status: " + e.getMessage());
         }
         return status;
     }

@@ -1,14 +1,17 @@
 package com.jeffthefate.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class GameUtil {
 
     private static GameUtil gameUtil;
+
+    private Logger logger = Logger.getLogger(GameUtil.class);
 
     public static GameUtil instance() {
         if (gameUtil == null) {
@@ -615,6 +618,10 @@ public class GameUtil {
         tempList.add("dreamgirl");
         tempList.add("dream girl");
         answerList.add(tempList);
+        tempList = new ArrayList<>(0);
+        tempList.add("doof");
+        tempList.add("dreams of our fathers");
+        answerList.add(tempList);
         return answerList;
     }
 
@@ -645,10 +652,39 @@ public class GameUtil {
         tipList.add("Scoring: #1 - Full points, #2 - 3/4 points, " +
                 "#3 - 1/2 points\nIf you protect tweets we must follow you to" +
                 " play (ask us)");
-        tipList.add("You won't see people guess who protect their tweets unless you follow each other");
+        tipList.add("Private account responses aren't visible unless you " +
+                "follow each other");
         tipList.add("Only one guess per person is accepted for each question");
         tipList.add("Note: We have a free DMB Trivia & Setlist app in the Google Play Store https://play.google.com/store/apps/details?id=com.jeffthefate.dmbquiz");
         return tipList;
+    }
+
+    public Date convertStringToDate(String format, String dateString) {
+        if (format == null || dateString == null) {
+            return null;
+        }
+        dateString = dateString.replace('_', ':');
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e2) {
+            logger.info("Failed to parse date from " + dateString);
+            e2.printStackTrace();
+        }
+        return date;
+    }
+
+    public String convertDateFormat(String fromFormat, String toFormat,
+            String dateString) {
+        if (fromFormat == null || toFormat == null || dateString == null) {
+            return null;
+        }
+        Date date = convertStringToDate(fromFormat, dateString);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(toFormat);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return dateFormat.format(date.getTime());
     }
 
 }
