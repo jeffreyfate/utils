@@ -2,6 +2,7 @@ package com.jeffthefate.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import twitter4j.conf.Configuration;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,12 +11,20 @@ import java.util.*;
 public class GameUtil {
 
     private static GameUtil gameUtil;
+    private static FileUtil fileUtil;
+    private static TwitterUtil twitterUtil;
 
     private Logger logger = Logger.getLogger(GameUtil.class);
 
     public static GameUtil instance() {
         if (gameUtil == null) {
             gameUtil = new GameUtil();
+        }
+        if (fileUtil == null) {
+            fileUtil = FileUtil.instance();
+        }
+        if (twitterUtil == null) {
+            twitterUtil = TwitterUtil.instance();
         }
         return gameUtil;
     }
@@ -685,6 +694,20 @@ public class GameUtil {
         SimpleDateFormat dateFormat = new SimpleDateFormat(toFormat);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         return dateFormat.format(date.getTime());
+    }
+
+    public boolean saveScores(String scoresFile,
+            HashMap<Object, Object> usersMap, Configuration twitterConfig) {
+        if (!fileUtil.saveHashMapToFile(scoresFile, usersMap)) {
+            twitterUtil.sendDirectMessage(twitterConfig, "jeffthefate",
+                    "Failed saving scores!");
+            return false;
+        }
+        return true;
+    }
+
+    public HashMap<Object, Object> readScores(String scoresFile) {
+        return fileUtil.readHashMapFromFile(scoresFile);
     }
 
 }
