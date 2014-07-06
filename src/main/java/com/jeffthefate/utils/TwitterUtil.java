@@ -6,9 +6,6 @@ import twitter4j.conf.Configuration;
 
 import java.io.File;
 
-/**
- * Created by Jeff on 6/18/2014.
- */
 public class TwitterUtil {
 
     private static TwitterUtil twitterUtil;
@@ -36,8 +33,8 @@ public class TwitterUtil {
         } catch (TwitterException e) {
             logger.info("Failed to get timeline: " + e.getMessage());
             e.printStackTrace();
-            sendDirectMessage(twitterConfig, "Copperpot5",
-                    "Error updating status! Check the log");
+            sendDirectMessage(twitterConfig, "jeffthefate",
+                    "Error updating status: " + e.getMessage());
         }
         return status;
     }

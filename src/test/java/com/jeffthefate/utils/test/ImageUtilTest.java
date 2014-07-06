@@ -3,9 +3,6 @@ package com.jeffthefate.utils.test;
 import com.jeffthefate.utils.ImageUtil;
 import junit.framework.TestCase;
 
-/**
- * Created by Jeff on 6/25/2014.
- */
 public class ImageUtilTest extends TestCase {
 
     private ImageUtil imageUtil = ImageUtil.instance();

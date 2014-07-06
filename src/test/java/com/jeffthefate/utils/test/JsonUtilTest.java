@@ -6,9 +6,6 @@ import com.jeffthefate.utils.json.SetlistResults;
 import com.jeffthefate.utils.json.SongResults;
 import junit.framework.TestCase;
 
-/**
- * Created by Jeff on 6/19/2014.
- */
 public class JsonUtilTest extends TestCase {
 
     public void testGetSetlistResults() {
