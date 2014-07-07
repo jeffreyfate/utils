@@ -53,7 +53,23 @@ public class DmbAlmanacUtilTest extends TestCase {
                 dmbAlmanacUtil.isThereAShowToday("", "2000"));
         assertFalse("There isn't a show today!",
                 dmbAlmanacUtil.isThereAShowToday("08.06.00", ""));
+    }
 
+    public void testGetShowCity() {
+        assertEquals("Didn't get the correct city!", "George, WA",
+                dmbAlmanacUtil.getShowCity("08.06.00", "2000"));
+        assertEquals("Didn't get the correct city!", "West Palm Beach, FL",
+                dmbAlmanacUtil.getShowCity("09.08.00", "2000"));
+        assertEquals("Didn't get blank!", "",
+                dmbAlmanacUtil.getShowCity("08.06.0", "2000"));
+        assertEquals("Didn't get blank!", "",
+                dmbAlmanacUtil.getShowCity("08.06.00", "2001"));
+        assertEquals("Didn't get blank!", "",
+                dmbAlmanacUtil.getShowCity("", "2000"));
+        assertEquals("Didn't get null!", null,
+                dmbAlmanacUtil.getShowCity(null, "2000"));
+        assertEquals("Didn't get null!", null,
+                dmbAlmanacUtil.getShowCity("08.06.00", null));
     }
 
 }

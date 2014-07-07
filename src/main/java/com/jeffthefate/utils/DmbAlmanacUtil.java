@@ -18,6 +18,7 @@ public class DmbAlmanacUtil {
 
     private final String YEAR_URL = "http://dmbalmanac.com/TourShow" +
             ".aspx?where=";
+    private final char WHITESPACE = 160;
 
     public static DmbAlmanacUtil instance() {
         if (dmbAlmanacUtil == null) {
@@ -45,12 +46,11 @@ public class DmbAlmanacUtil {
         }
         Elements shows = yearDocument.select("a[href$=" + year + "]");
         String childText;
-        char whitespace = 160;
         for (Element show : shows) {
             if (!show.childNodes().isEmpty()) {
                 childText = StringUtils.strip(StringEscapeUtils.unescapeHtml4(
                             show.childNode(0).toString()),
-                        Character.toString(whitespace));
+                        Character.toString(WHITESPACE));
                 if (childText.matches("\\d\\d\\.\\d\\d\\.\\d\\d")) {
                     showStrings.add(childText);
                 }
@@ -79,5 +79,26 @@ public class DmbAlmanacUtil {
         else {
             return yearShows.contains(dateString);
         }
+    }
+
+    public String getShowCity(String showDate, String year) {
+        if (showDate == null || year == null) {
+            return null;
+        }
+        Document yearDocument = getYear(year);
+        if (yearDocument == null) {
+            return null;
+        }
+        Elements shows = yearDocument.select("tr[bgcolor=#1A2B4C]");
+        shows.addAll(yearDocument.select("tr[bgcolor=#102142]"));
+        for (Element show : shows) {
+            if (StringUtils.strip(StringEscapeUtils.unescapeHtml4(
+                    show.select("a[href$=" + year + "]").first().childNode(0)
+                    .toString()), Character.toString(WHITESPACE)).equals(
+                    showDate)){
+                return show.select("span[class=detail3]").text();
+            }
+        }
+        return "";
     }
 }
