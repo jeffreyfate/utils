@@ -2,8 +2,8 @@ package com.jeffthefate.utils.test;
 
 import com.jeffthefate.utils.CredentialUtil;
 import com.jeffthefate.utils.Parse;
-import com.jeffthefate.utils.json.Credential;
 import com.jeffthefate.utils.json.JsonUtil;
+import com.jeffthefate.utils.json.parse.Credential;
 import junit.framework.TestCase;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

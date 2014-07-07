@@ -1,4 +1,4 @@
-package com.jeffthefate.utils.json;
+package com.jeffthefate.utils.json.parse;
 
 import java.util.List;
 

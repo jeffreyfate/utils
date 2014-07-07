@@ -107,5 +107,15 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>oauth.signpost</groupId>
+            <artifactId>oauth-signpost</artifactId>
+            <version>1.2.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>oauth.signpost</groupId>
+            <artifactId>signpost-commonshttp4</artifactId>
+            <version>1.2.1.2</version>
+        </dependency>
     </dependencies>
 </project>

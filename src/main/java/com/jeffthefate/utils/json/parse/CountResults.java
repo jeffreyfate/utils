@@ -1,16 +1,16 @@
-package com.jeffthefate.utils.json;
+package com.jeffthefate.utils.json.parse;
 
 import java.util.List;
 
-public class SetlistResults {
+public class CountResults {
 
-    private List<Setlist> results;
+    private List<Count> results;
 
-    public List<Setlist> getResults() {
+    public List<Count> getResults() {
         return results;
     }
 
-    public void setResults(List<Setlist> results) {
+    public void setResults(List<Count> results) {
         this.results = results;
     }
 

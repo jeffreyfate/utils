@@ -1,16 +1,16 @@
-package com.jeffthefate.utils.json;
+package com.jeffthefate.utils.json.parse;
 
 import java.util.List;
 
-public class SongResults {
+public class VenueResults {
 
-    private List<Song> results;
+    private List<Venue> results;
 
-    public List<Song> getResults() {
+    public List<Venue> getResults() {
         return results;
     }
 
-    public void setResults(List<Song> results) {
+    public void setResults(List<Venue> results) {
         this.results = results;
     }
 
@@ -18,4 +18,5 @@ public class SongResults {
     public String toString() {
         return "results: " + getResults();
     }
+
 }
