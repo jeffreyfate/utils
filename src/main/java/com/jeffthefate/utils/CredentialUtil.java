@@ -2,8 +2,6 @@ package com.jeffthefate.utils;
 
 import com.jeffthefate.utils.json.JsonUtil;
 import com.jeffthefate.utils.json.parse.Credential;
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.basic.DefaultOAuthConsumer;
 import org.apache.log4j.Logger;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -45,29 +43,6 @@ public class CredentialUtil {
             logger.error("A parameter was something other than a string!", e);
             return null;
         }
-    }
-
-    public OAuthConsumer getCredentialedOAuth(boolean isDev, String credFile) {
-        Parse parse = getCredentialedParse(isDev, credFile);
-        String response = parse.get("Credential", "");
-        List<Credential> credentialList = jsonUtil.getCredentialResults(
-                response).getResults();
-        String PLACEFINDER_KEY = null;
-        String PLACEFINDER_SECRET = null;
-        for (Credential credential : credentialList) {
-            switch(credential.getName()) {
-                case "placefinderKey":
-                    PLACEFINDER_KEY = credential.getValue();
-                    break;
-                case "placefinderSecret":
-                    PLACEFINDER_SECRET = credential.getValue();
-                    break;
-            }
-        }
-        if (PLACEFINDER_KEY == null || PLACEFINDER_SECRET == null) {
-            return null;
-        }
-        return new DefaultOAuthConsumer(PLACEFINDER_KEY, PLACEFINDER_SECRET);
     }
 
     public Configuration getCredentialedTwitter(Parse parse, boolean isGame) {

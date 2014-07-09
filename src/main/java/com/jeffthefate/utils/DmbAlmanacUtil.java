@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.text.SimpleDateFormat;
@@ -45,12 +46,16 @@ public class DmbAlmanacUtil {
             return showStrings;
         }
         Elements shows = yearDocument.select("a[href$=" + year + "]");
+        Node node;
         String childText;
         for (Element show : shows) {
             if (!show.childNodes().isEmpty()) {
+                node = show.childNode(0);
+                if (!node.childNodes().isEmpty()) {
+                    node = node.childNode(0);
+                }
                 childText = StringUtils.strip(StringEscapeUtils.unescapeHtml4(
-                            show.childNode(0).toString()),
-                        Character.toString(WHITESPACE));
+                            node.toString()), Character.toString(WHITESPACE));
                 if (childText.matches("\\d\\d\\.\\d\\d\\.\\d\\d")) {
                     showStrings.add(childText);
                 }
@@ -67,18 +72,19 @@ public class DmbAlmanacUtil {
         }
         else {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
-            String today = dateFormat.format(date.getTime());
-            yearShows = getYearDates(today);
+            yearShows = getYearDates(dateFormat.format(date.getTime()));
         }
         if (dateString == null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yy");
-            //dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            String today = dateFormat.format(date.getTime());
-            return yearShows.contains(today);
+            return yearShows.contains(convertDateToAlmanacFormat(date));
         }
         else {
             return yearShows.contains(dateString);
         }
+    }
+
+    public String convertDateToAlmanacFormat(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yy");
+        return dateFormat.format(date.getTime());
     }
 
     public String getShowCity(String showDate, String year) {
@@ -91,11 +97,16 @@ public class DmbAlmanacUtil {
         }
         Elements shows = yearDocument.select("tr[bgcolor=#1A2B4C]");
         shows.addAll(yearDocument.select("tr[bgcolor=#102142]"));
+        Node node;
+        String date;
         for (Element show : shows) {
-            if (StringUtils.strip(StringEscapeUtils.unescapeHtml4(
-                    show.select("a[href$=" + year + "]").first().childNode(0)
-                    .toString()), Character.toString(WHITESPACE)).equals(
-                    showDate)){
+            node = show.select("a[href$=" + year + "]").first().childNode(0);
+            if (!node.childNodes().isEmpty()) {
+                node = node.childNode(0);
+            }
+            date = StringUtils.strip(StringEscapeUtils.unescapeHtml4(
+                    node.toString()), Character.toString(WHITESPACE));
+            if (date.equals(showDate)){
                 return show.select("span[class=detail3]").text();
             }
         }

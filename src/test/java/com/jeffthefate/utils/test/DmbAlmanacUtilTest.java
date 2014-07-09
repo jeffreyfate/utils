@@ -38,6 +38,11 @@ public class DmbAlmanacUtilTest extends TestCase {
         assertTrue("2000 dates doesn't contain 08.06.00!",
                 yearDates.contains("08.06.00"));
         assertTrue("2000 dates size is wrong!", yearDates.size() == 67);
+        yearDates = dmbAlmanacUtil.getYearDates("2014");
+        assertFalse("2014 dates list is empty!", yearDates.isEmpty());
+        assertTrue("2014 dates doesn't contain 08.31.14!",
+                yearDates.contains("08.31.14"));
+        assertTrue("2014 dates size is wrong!", yearDates.size() == 53);
     }
 
     public void testIsThereAShowToday() {

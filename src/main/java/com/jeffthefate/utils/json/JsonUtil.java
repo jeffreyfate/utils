@@ -1,7 +1,9 @@
 package com.jeffthefate.utils.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jeffthefate.utils.json.geocoding.GeocodingResponse;
 import com.jeffthefate.utils.json.parse.*;
+import com.jeffthefate.utils.json.timezone.TimeZone;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -143,6 +145,106 @@ public class JsonUtil {
     public Credential getCredential(String json) {
         try {
             return objectMapper.readValue(json, Credential.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public SymbolResults getSymbolResults(String json) {
+        try {
+            return objectMapper.readValue(json, SymbolResults.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Symbol getSymbol(String json) {
+        try {
+            return objectMapper.readValue(json, Symbol.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public MatchResults getMatchResults(String json) {
+        try {
+            return objectMapper.readValue(json, MatchResults.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Match getMatch(String json) {
+        try {
+            return objectMapper.readValue(json, Match.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ReplaceResults getReplaceResults(String json) {
+        try {
+            return objectMapper.readValue(json, ReplaceResults.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Replace getReplace(String json) {
+        try {
+            return objectMapper.readValue(json, Replace.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public TipResults getTipResults(String json) {
+        try {
+            return objectMapper.readValue(json, TipResults.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Tip getTip(String json) {
+        try {
+            return objectMapper.readValue(json, Tip.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public GeocodingResponse getGeocodingResponse(String json) {
+        try {
+            return objectMapper.readValue(json, GeocodingResponse.class);
+        } catch (IOException e) {
+            logger.error("Unable to parse JSON to Count!", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public TimeZone getTimeZone(String json) {
+        try {
+            return objectMapper.readValue(json, TimeZone.class);
         } catch (IOException e) {
             logger.error("Unable to parse JSON to Count!", e);
             e.printStackTrace();
