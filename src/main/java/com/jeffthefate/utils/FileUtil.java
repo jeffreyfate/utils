@@ -122,6 +122,7 @@ public class FileUtil {
 
     private byte[] readBufferFromFile(String filename) {
         File file = new File(filename);
+        logger.info("file length: " + file.length());
         byte[] buffer = new byte[(int)file.length()];
         BufferedInputStream bufStream;
         try {

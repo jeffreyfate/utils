@@ -42,15 +42,15 @@ public class DmbAlmanacUtilTest extends TestCase {
         assertFalse("2014 dates list is empty!", yearDates.isEmpty());
         assertTrue("2014 dates doesn't contain 08.31.14!",
                 yearDates.contains("08.31.14"));
-        assertTrue("2014 dates size is wrong!", yearDates.size() == 53);
+        assertTrue("2014 dates size is wrong!", yearDates.size() == 54);
     }
 
     public void testIsThereAShowToday() {
-        assertFalse("There isn't a show today!",
+        assertFalse("There is a show today!",
                 dmbAlmanacUtil.isThereAShowToday(null, null));
         assertTrue("There is a show today!",
                 dmbAlmanacUtil.isThereAShowToday("08.06.00", "2000"));
-        assertFalse("There isn't a show today!",
+        assertFalse("There is a show today!",
                 dmbAlmanacUtil.isThereAShowToday("01.01.00", "2000"));
         assertFalse("There isn't a show today!",
                 dmbAlmanacUtil.isThereAShowToday("", ""));

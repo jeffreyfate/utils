@@ -39,7 +39,8 @@ public class WarehouseHtmlUtil extends HtmlUtil {
     }
 
     @Override
-    public Document getPageDocument(String url, boolean secure) {
+    public Document getPageDocument(String url, boolean secure, String user,
+            String password) {
         if (url == null || StringUtils.isBlank(url)) {
             return null;
         }
@@ -74,8 +75,8 @@ public class WarehouseHtmlUtil extends HtmlUtil {
                     new ArrayList<>();
             nameValuePairs.add(new BasicNameValuePair("the_url", ""));
             nameValuePairs.add(new BasicNameValuePair("form_action", "login"));
-            nameValuePairs.add(new BasicNameValuePair("Username", "fateman"));
-            nameValuePairs.add(new BasicNameValuePair("Password", "nintendo"));
+            nameValuePairs.add(new BasicNameValuePair("Username", user));
+            nameValuePairs.add(new BasicNameValuePair("Password", password));
             nameValuePairs.add(new BasicNameValuePair("x", "0"));
             nameValuePairs.add(new BasicNameValuePair("y", "0"));
             try {

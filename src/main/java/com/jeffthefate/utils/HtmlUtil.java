@@ -43,6 +43,11 @@ public class HtmlUtil {
     /**************************************************************************/
     /*                              DOM Fetching                              */
     /**************************************************************************/
+    /**
+     * Build a secure client with SSL/TLS.
+     *
+     * @return HttpClient that connects securely
+     */
     public HttpClient createSecureConnection() {
         // SSL context for secure connections can be created either based on
         // system or application specific properties.
@@ -62,7 +67,8 @@ public class HtmlUtil {
         return HttpClientBuilder.create().setConnectionManager(mgr).build();
     }
 
-    public Document getPageDocument(String url, boolean secure) {
+    public Document getPageDocument(String url, boolean secure, String user,
+            String password) {
         if (url == null || StringUtils.isBlank(url)) {
             return null;
         }

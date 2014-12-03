@@ -20,12 +20,12 @@ public class CredentialUtilTest extends TestCase {
      */
     public void testGetCredentialedParse() {
         Parse parse = credentialUtil.getCredentialedParse(false,
-                "D:\\parseCreds");
+                "parseCreds");
         String response = parse.getObject("Credential", "HLQWbSXoTC");
         Credential credential = jsonUtil.getCredential(response);
         assertEquals("Credential not correct!", credential.getValue(),
                 "dmbtrivia");
-        parse = credentialUtil.getCredentialedParse(true, "D:\\parseCreds");
+        parse = credentialUtil.getCredentialedParse(true, "parseCreds");
         response = parse.getObject("Credential", "IrzaFfj9EQ");
         credential = jsonUtil.getCredential(response);
         assertEquals("Credential not correct!", credential.getValue(),
@@ -37,7 +37,7 @@ public class CredentialUtilTest extends TestCase {
      */
     public void testGetCredentialedTwitter() {
         Parse parse = credentialUtil.getCredentialedParse(true,
-                "D:\\parseCreds");
+                "parseCreds");
         Configuration configuration = credentialUtil.getCredentialedTwitter
                 (parse, false);
         Twitter twitter = new TwitterFactory(configuration).getInstance();
@@ -47,7 +47,7 @@ public class CredentialUtilTest extends TestCase {
         } catch (TwitterException e) {
             e.printStackTrace();
         }
-        parse = credentialUtil.getCredentialedParse(false, "D:\\parseCreds");
+        parse = credentialUtil.getCredentialedParse(false, "parseCreds");
         configuration = credentialUtil.getCredentialedTwitter(parse, false);
         twitter = new TwitterFactory(configuration).getInstance();
         try {

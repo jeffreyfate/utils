@@ -145,11 +145,11 @@ public class GameUtil {
         return replaceList;
     }
 
-    public ArrayList<String> createTriviaTipList(boolean isDev,
-            String credFile) {
+    public ArrayList<String> createTipList(boolean isDev, String credFile,
+            String className) {
         ArrayList<String> tipList = new ArrayList<>(0);
         Parse parse = credentialUtil.getCredentialedParse(isDev, credFile);
-        List<Tip> tips = jsonUtil.getTipResults(parse.get("TriviaTip", ""))
+        List<Tip> tips = jsonUtil.getTipResults(parse.get(className, ""))
                 .getResults();
         for (Tip tip : tips) {
             tipList.add(tip.getTip());

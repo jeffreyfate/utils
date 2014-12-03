@@ -77,11 +77,6 @@
 		    <artifactId>commons-httpclient</artifactId>
 		    <version>3.1</version>
 		</dependency>
-		<dependency>
-		    <groupId>org.ardverk</groupId>
-		    <artifactId>patricia-trie</artifactId>
-		    <version>0.7-SNAPSHOT</version>
-		</dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>

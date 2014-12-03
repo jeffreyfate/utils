@@ -36,7 +36,7 @@ public class DmbAlmanacUtil {
                 !NumberUtils.isNumber(year)) {
             return null;
         }
-        return htmlUtil.getPageDocument(YEAR_URL + year, false);
+        return htmlUtil.getPageDocument(YEAR_URL + year, false, null, null);
     }
 
     public ArrayList<String> getYearDates(String year) {

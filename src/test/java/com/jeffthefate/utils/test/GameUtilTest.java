@@ -14,6 +14,6 @@ public class GameUtilTest extends TestCase {
 
     public void testGenerateSongMatchList() {
         assertFalse("List is empty!", gameUtil.generateSongMatchList(false,
-                "D:\\parseCreds").isEmpty());
+                "parseCreds").isEmpty());
     }
 }

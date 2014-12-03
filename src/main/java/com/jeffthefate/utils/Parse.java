@@ -1,9 +1,6 @@
 package com.jeffthefate.utils;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -22,7 +19,7 @@ import java.util.InputMismatchException;
 
 /**
  * Utility functions that interact with the Parse web backend.
- * </p>
+ * <p>
  * A failure is indicated to users by returning null, so checking for null is
  * required to check that something failed.
  */
@@ -91,9 +88,13 @@ public class Parse {
         httpGet.addHeader(restApiHeader);
         httpGet.addHeader(contentTypeHeader);
         HttpResponse httpResponse = getResponse(httpGet);
-        if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+        if (httpResponse == null) {
+            return null;
+        }
+        StatusLine statusLine = httpResponse.getStatusLine();
+        if (statusLine == null || statusLine.getStatusCode() != HttpStatus.SC_OK) {
             logger.error("Get did not fetch successfully!");
-            logger.error(httpResponse.getStatusLine().getReasonPhrase());
+            logger.error(statusLine.getReasonPhrase());
             return null;
         }
         return getResponseString(httpResponse);
@@ -112,9 +113,13 @@ public class Parse {
         httpGet.addHeader(restApiHeader);
         httpGet.addHeader(contentTypeHeader);
         HttpResponse httpResponse = getResponse(httpGet);
-        if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+        if (httpResponse == null) {
+            return null;
+        }
+        StatusLine statusLine = httpResponse.getStatusLine();
+        if (statusLine == null || statusLine.getStatusCode() != HttpStatus.SC_OK) {
             logger.error("Get did not fetch successfully!");
-            logger.error(httpResponse.getStatusLine().getReasonPhrase());
+            logger.error(statusLine.getReasonPhrase());
             return null;
         }
         return getResponseString(httpResponse);
@@ -124,11 +129,18 @@ public class Parse {
      *
      * @param className name of class to interact with
      * @param objectId  identifier of the object to edit
+     * @param data      data to update record with
      * @return          response string from the PUT; null if error
      */
     public String put(String className, String objectId, String data) {
-        HttpPut httpPut = new HttpPut(combineUrl(urlBase, className, "/",
-                objectId));
+        HttpPut httpPut;
+        try {
+            httpPut = new HttpPut(combineUrl(urlBase, className, "/",
+                    objectId));
+        } catch (Exception e) {
+            logger.error("Bad URI!", e);
+            return null;
+        }
         httpPut.addHeader(appIdHeader);
         httpPut.addHeader(restApiHeader);
         httpPut.addHeader(contentTypeHeader);
@@ -139,10 +151,14 @@ public class Parse {
             return null;
         }
         HttpResponse httpResponse = getResponse(httpPut);
-        if (httpResponse.getStatusLine().getStatusCode() != HttpStatus
+        if (httpResponse == null) {
+            return null;
+        }
+        StatusLine statusLine = httpResponse.getStatusLine();
+        if (statusLine == null || statusLine.getStatusCode() != HttpStatus
                 .SC_OK) {
             logger.error("Put did not update object!");
-            logger.error(httpResponse.getStatusLine().getReasonPhrase());
+            logger.error(statusLine.getReasonPhrase());
             return null;
         }
         return getResponseString(httpResponse);
@@ -166,10 +182,14 @@ public class Parse {
             return null;
         }
         HttpResponse httpResponse = getResponse(httpPost);
-        if (httpResponse.getStatusLine().getStatusCode() != HttpStatus
+        if (httpResponse == null) {
+            return null;
+        }
+        StatusLine statusLine = httpResponse.getStatusLine();
+        if (statusLine == null || statusLine.getStatusCode() != HttpStatus
                 .SC_CREATED) {
             logger.error("Post did not create object!");
-            logger.error(httpResponse.getStatusLine().getReasonPhrase());
+            logger.error(statusLine.getReasonPhrase());
             return null;
         }
         return getResponseString(httpResponse);
@@ -189,10 +209,14 @@ public class Parse {
             return null;
         }
         HttpResponse httpResponse = getResponse(httpPost);
-        if (httpResponse.getStatusLine().getStatusCode() != HttpStatus
+        if (httpResponse == null) {
+            return null;
+        }
+        StatusLine statusLine = httpResponse.getStatusLine();
+        if (statusLine == null || statusLine.getStatusCode() != HttpStatus
                 .SC_OK) {
             logger.error("Post did not create object!");
-            logger.error(httpResponse.getStatusLine().getReasonPhrase());
+            logger.error(statusLine.getReasonPhrase());
             return null;
         }
         return getResponseString(httpResponse);
@@ -251,6 +275,9 @@ public class Parse {
 
     /**
      * Mark a single trivia question with a given trivia level.
+     *
+     * @param objectId      which object to edit
+     * @param triviaLevel   what level to set it to
      */
     public boolean markAsTrivia(String objectId, int triviaLevel) {
         logger.info("Marking question " + objectId + " to " + triviaLevel);
