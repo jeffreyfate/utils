@@ -55,6 +55,9 @@ public class GeocodingUtil {
                 return geocode.getGeometry().getLocation();
             }
         }
+        if (!geocodeList.isEmpty()) {
+            return geocodeList.get(0).getGeometry().getLocation();
+        }
         return null;
     }
 

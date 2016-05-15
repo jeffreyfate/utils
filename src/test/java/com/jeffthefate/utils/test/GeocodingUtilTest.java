@@ -24,8 +24,20 @@ public class GeocodingUtilTest extends TestCase {
         latLon = geocodingUtil.getCityLatLon(null);
         assertNull("Latlon object not null!", latLon);
         latLon = geocodingUtil.getCityLatLon("Sao Paulo, Brazil");
-        assertNull("Latlon object not null!", latLon);
+        assertNotNull("Latlon object is null!", latLon);
         latLon = geocodingUtil.getCityLatLon("São Paulo, Brazil");
+        assertNotNull("Latlon object is null!", latLon);
+        latLon = geocodingUtil.getCityLatLon("Mexico City, MEX");
+        assertNotNull("Latlon object is null!", latLon);
+        latLon = geocodingUtil.getCityLatLon("Madrid, ESP");
+        assertNotNull("Latlon object is null!", latLon);
+        latLon = geocodingUtil.getCityLatLon("Assago, IT");
+        assertNotNull("Latlon object is null!", latLon);
+        latLon = geocodingUtil.getCityLatLon("Frankfurt am Main, DEU");
+        assertNotNull("Latlon object is null!", latLon);
+        latLon = geocodingUtil.getCityLatLon("Gdańsk, POL");
+        assertNotNull("Latlon object is null!", latLon);
+        latLon = geocodingUtil.getCityLatLon("Dublin, Ireland");
         assertNotNull("Latlon object is null!", latLon);
     }
 

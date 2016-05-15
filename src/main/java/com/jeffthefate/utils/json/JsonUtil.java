@@ -173,6 +173,9 @@ public class JsonUtil {
     }
 
     public MatchResults getMatchResults(String json) {
+        if (json == null) {
+            return new MatchResults();
+        }
         try {
             return objectMapper.readValue(json, MatchResults.class);
         } catch (IOException e) {

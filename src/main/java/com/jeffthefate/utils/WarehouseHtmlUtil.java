@@ -2,13 +2,13 @@ package com.jeffthefate.utils;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -41,6 +41,7 @@ public class WarehouseHtmlUtil extends HtmlUtil {
     @Override
     public Document getPageDocument(String url, boolean secure, String user,
             String password) {
+        logger.info("getPageDocument: " + url + " : " + secure + " : " + user + " : " + password);
         if (url == null || StringUtils.isBlank(url)) {
             return null;
         }
@@ -48,13 +49,13 @@ public class WarehouseHtmlUtil extends HtmlUtil {
             HttpPost postMethod = new HttpPost(
                     "https://whsec1.davematthewsband.com/login.asp");
             postMethod.addHeader("Accept",
-                    "text/html, application/xhtml+xml, */*");
+                    "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
             postMethod.addHeader("Referer",
                     "https://whsec1.davematthewsband.com/login.asp");
             postMethod.addHeader("Accept-Language", "en-US");
             postMethod.addHeader("User-Agent",
-                    "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; " +
-                            "WOW64; Trident/5.0)");
+                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 " +
+                            "Safari/537.36");
             postMethod.addHeader("Content-Type",
                     "application/x-www-form-urlencoded");
             postMethod.addHeader("Accept-Encoding", "gzip, deflate");
@@ -75,6 +76,7 @@ public class WarehouseHtmlUtil extends HtmlUtil {
                     new ArrayList<>();
             nameValuePairs.add(new BasicNameValuePair("the_url", ""));
             nameValuePairs.add(new BasicNameValuePair("form_action", "login"));
+            nameValuePairs.add(new BasicNameValuePair("MaintSafety", "912"));
             nameValuePairs.add(new BasicNameValuePair("Username", user));
             nameValuePairs.add(new BasicNameValuePair("Password", password));
             nameValuePairs.add(new BasicNameValuePair("x", "0"));
@@ -82,22 +84,26 @@ public class WarehouseHtmlUtil extends HtmlUtil {
             try {
                 postMethod.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             } catch (UnsupportedEncodingException e) {
-                logger.error("Unsupported encoding for " + nameValuePairs);
+                logger.info("Unsupported encoding for " + nameValuePairs);
                 e.printStackTrace();
             }
-            HttpResponse response = null;
-            HttpClient client = createSecureConnection();
+            CloseableHttpResponse response = null;
+            logger.info("Creating secure connection for https://whsec1.davematthewsband.com/login.asp");
+            CloseableHttpClient client = (CloseableHttpClient) createSecureConnection();
             try {
+                logger.info("Executing request to https://whsec1.davematthewsband.com/login.asp");
                 response = client.execute(postMethod);
+                if (response.getStatusLine().getStatusCode() != 200 &&
+                        response.getStatusLine().getStatusCode() != 302) {
+                    logger.info("Failed to get response from to " +
+                            postMethod.getURI().toASCIIString());
+                }
+                logger.info("Closing login response");
+                response.close();
             } catch (IOException e) {
-                logger.error("Unable to connect to " +
+                logger.info("Unable to connect to " +
                         postMethod.getURI().toASCIIString());
                 e.printStackTrace();
-            }
-            if (response == null || (response.getStatusLine().getStatusCode() !=
-                    200 && response.getStatusLine().getStatusCode() != 302)) {
-                logger.info("Failed to get response from to " +
-                        postMethod.getURI().toASCIIString());
             }
             HttpGet getMethod = new HttpGet(url);
             String html = null;
@@ -105,9 +111,12 @@ public class WarehouseHtmlUtil extends HtmlUtil {
                 client = HttpClientBuilder.create().build();
             }
             try {
+                logger.info("Executing request to " + url);
                 response = client.execute(getMethod);
-                html = EntityUtils.toString(response.getEntity(), "UTF-8");
+                html = EntityUtils.toString(response.getEntity());
                 html = StringEscapeUtils.unescapeHtml4(html);
+                logger.info("Closing response from " + url);
+                response.close();
             } catch (ClientProtocolException e) {
                 logger.info("Failed to connect to " +
                         getMethod.getURI().toASCIIString(), e);

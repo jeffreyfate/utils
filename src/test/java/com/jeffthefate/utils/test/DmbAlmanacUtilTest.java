@@ -5,6 +5,9 @@ import junit.framework.TestCase;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class DmbAlmanacUtilTest extends TestCase {
 
@@ -33,31 +36,39 @@ public class DmbAlmanacUtilTest extends TestCase {
     }
 
     public void testGetYearDates() {
-        ArrayList<String> yearDates = dmbAlmanacUtil.getYearDates("2000");
-        assertFalse("2000 dates list is empty!", yearDates.isEmpty());
-        assertTrue("2000 dates doesn't contain 08.06.00!",
-                yearDates.contains("08.06.00"));
-        assertTrue("2000 dates size is wrong!", yearDates.size() == 67);
-        yearDates = dmbAlmanacUtil.getYearDates("2014");
-        assertFalse("2014 dates list is empty!", yearDates.isEmpty());
-        assertTrue("2014 dates doesn't contain 08.31.14!",
-                yearDates.contains("08.31.14"));
-        assertTrue("2014 dates size is wrong!", yearDates.size() == 54);
+        Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        calendar.set(2000, Calendar.AUGUST, 6, 19, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        ArrayList<String> yearDates = dmbAlmanacUtil.getYearDates("2000",
+                calendar.getTime().getTime(), 19, -1);
+        assertFalse("2000 dates list isn't empty!", yearDates.isEmpty());
     }
 
     public void testIsThereAShowToday() {
+        Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        calendar.set(2000, Calendar.AUGUST, 6, 12, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         assertFalse("There is a show today!",
-                dmbAlmanacUtil.isThereAShowToday(null, null));
-        assertTrue("There is a show today!",
-                dmbAlmanacUtil.isThereAShowToday("08.06.00", "2000"));
+                dmbAlmanacUtil.isThereAShowIn24Hours(0, calendar.getTime()));
+        assertTrue("There isn't a show today!",
+                dmbAlmanacUtil.isThereAShowIn24Hours(19, calendar.getTime()));
+        assertTrue("There isn't a show today!",
+                dmbAlmanacUtil.isThereAShowIn24Hours(-1, calendar.getTime()));
+        assertTrue("There isn't a show today!",
+                dmbAlmanacUtil.isThereAShowIn24Hours(100, calendar.getTime()));
+        assertTrue("There isn't a show today!",
+                dmbAlmanacUtil.isThereAShowIn24Hours(12, calendar.getTime()));
+        calendar.set(2016, Calendar.MAY, 4);
         assertFalse("There is a show today!",
-                dmbAlmanacUtil.isThereAShowToday("01.01.00", "2000"));
-        assertFalse("There isn't a show today!",
-                dmbAlmanacUtil.isThereAShowToday("", ""));
-        assertFalse("There isn't a show today!",
-                dmbAlmanacUtil.isThereAShowToday("", "2000"));
-        assertFalse("There isn't a show today!",
-                dmbAlmanacUtil.isThereAShowToday("08.06.00", ""));
+                dmbAlmanacUtil.isThereAShowIn24Hours(18, calendar.getTime()));
+        calendar.set(2016, Calendar.MAY, 7);
+        assertTrue("There isn't a show today!",
+                dmbAlmanacUtil.isThereAShowIn24Hours(19, calendar.getTime()));
+        assertTrue("There isn't a show today!",
+                dmbAlmanacUtil.isThereAShowIn24Hours(20, calendar.getTime()));
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        assertTrue("There isn't a show today!",
+                dmbAlmanacUtil.isThereAShowIn24Hours(19, calendar.getTime()));
     }
 
     public void testGetShowCity() {

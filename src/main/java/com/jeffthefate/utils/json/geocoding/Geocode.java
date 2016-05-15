@@ -7,6 +7,8 @@ public class Geocode {
     private List<AddressComponent> address_components;
     private String formatted_address;
     private Geometry geometry;
+    private boolean partial_match;
+    private String place_id;
     private List<String> types;
 
     public List<AddressComponent> getAddress_components() {
@@ -32,6 +34,14 @@ public class Geocode {
     public void setGeometry(Geometry geometry) {
         this.geometry = geometry;
     }
+
+    public boolean getPartial_match() { return partial_match; }
+
+    public void setPartial_match(boolean partial_match) { this.partial_match = partial_match; }
+
+    public String getPlace_id() { return place_id; }
+
+    public void setPlace_id(String place_id) { this.place_id = place_id; }
 
     public List<String> getTypes() {
         return types;
