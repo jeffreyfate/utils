@@ -2,6 +2,9 @@ package com.jeffthefate.utils;
 
 import com.jeffthefate.utils.json.JsonUtil;
 import com.jeffthefate.utils.json.parse.Credential;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Version;
 import org.apache.log4j.Logger;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -106,6 +109,36 @@ public class CredentialUtil {
                     .setOAuthAccessTokenSecret(isGame ? GAME_ACCESS_SECRET :
                             SETLIST_ACCESS_SECRET);
             return cb.build();
+        }
+        else {
+            return null;
+        }
+    }
+
+    public Facebook getCredentialedFacebook(Parse parse) {
+        String FACEBOOK_APP_SECRET = null;
+        String FACEBOOK_ACCESS_TOKEN = null;
+        String FACEBOOK_PAGE_ID = null;
+        String response = parse.get("Credential", "");
+        List<Credential> credentialList = jsonUtil.getCredentialResults(
+                response).getResults();
+        for (Credential credential : credentialList) {
+            switch(credential.getName()) {
+                case "facebookAppSecret":
+                    FACEBOOK_APP_SECRET = credential.getValue();
+                    break;
+                case "facebookAccessToken":
+                    FACEBOOK_ACCESS_TOKEN = credential.getValue();
+                    break;
+                case "facebookPageId":
+                    FACEBOOK_PAGE_ID = credential.getValue();
+                    break;
+            }
+        }
+        if (FACEBOOK_APP_SECRET != null && FACEBOOK_ACCESS_TOKEN != null && FACEBOOK_PAGE_ID != null) {
+            FacebookClient facebookClient = new DefaultFacebookClient(FACEBOOK_ACCESS_TOKEN, FACEBOOK_APP_SECRET,
+                    Version.LATEST);
+            return new Facebook(facebookClient, FACEBOOK_PAGE_ID);
         }
         else {
             return null;
