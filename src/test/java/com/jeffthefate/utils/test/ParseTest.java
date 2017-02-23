@@ -95,7 +95,7 @@ public class ParseTest extends TestCase {
         Parse parse = new Parse(testAppId, testRestApi);
         // An existing object
         String response = parse.put("Setlist", "hVAIYCTXhv", "");
-        Assert.assertNull("Put succeeded!", response);
+        Assert.assertNotNull("Put failed!", response);
     }
 
     public void testPutNullData() {

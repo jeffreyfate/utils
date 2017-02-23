@@ -1,9 +1,9 @@
 package com.jeffthefate.utils.test;
 
 import com.jeffthefate.utils.json.JsonUtil;
-import com.jeffthefate.utils.json.QuestionResults;
-import com.jeffthefate.utils.json.SetlistResults;
-import com.jeffthefate.utils.json.SongResults;
+import com.jeffthefate.utils.json.parse.QuestionResults;
+import com.jeffthefate.utils.json.parse.SetlistResults;
+import com.jeffthefate.utils.json.parse.SongResults;
 import junit.framework.TestCase;
 
 public class JsonUtilTest extends TestCase {
