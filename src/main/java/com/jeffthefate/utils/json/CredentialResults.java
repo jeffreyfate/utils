@@ -1,22 +1,25 @@
 package com.jeffthefate.utils.json;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties({"offset", "nextPage", "totalObjects"})
 public class CredentialResults {
 
-    private List<Credential> results;
+    private List<Credential> data;
 
-    public List<Credential> getResults() {
-        return results;
+    public List<Credential> getData() {
+        return data;
     }
 
-    public void setResults(List<Credential> results) {
-        this.results = results;
+    public void setData(List<Credential> data) {
+        this.data = data;
     }
 
     @Override
     public String toString() {
-        return "results: " + getResults();
+        return "data: " + getData();
     }
 
 }

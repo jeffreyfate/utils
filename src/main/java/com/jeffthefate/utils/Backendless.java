@@ -21,14 +21,17 @@ import org.codehaus.jackson.node.ObjectNode;
 import java.util.InputMismatchException;
 
 /**
- * Utility functions that interact with the Parse web backend.
+ * <p>
+ *     Utility functions that interact with the Backendless web backend.
  * </p>
- * A failure is indicated to users by returning null, so checking for null is
- * required to check that something failed.
+ * <p>
+ *     A failure is indicated to users by returning null, so checking for null is required to check that something
+ *     failed.
+ * </p>
  */
-public class Parse {
+public class Backendless {
 
-    private final String urlBase = "https://api.parse.com/1/classes/";
+    private final String urlBase = "https://api.backendless.com/v1/data/";
 
     public Header getAppIdHeader() {
         return appIdHeader;
@@ -49,10 +52,11 @@ public class Parse {
     private Header appIdHeader;
     private Header restApiHeader;
     private Header contentTypeHeader;
+    private Header applicationTypeHeader;
 
     private HttpClient httpClient = HttpClientBuilder.create().build();
 
-    private Logger logger = Logger.getLogger(Parse.class);
+    private Logger logger = Logger.getLogger(Backendless.class);
 
     /**
      * Create instance with required headers.
@@ -60,9 +64,9 @@ public class Parse {
      * @param appId     ID for the app to interact with
      * @param restApi   REST API key for the app to interact with
      */
-    public Parse(Object appId, Object restApi) throws InputMismatchException {
-        final String appIdKey = "X-Parse-Application-Id";
-        final String restApiKey = "X-Parse-REST-API-Key";
+    public Backendless(Object appId, Object restApi) throws InputMismatchException {
+        final String appIdKey = "application-id";
+        final String restApiKey = "secret-key";
         if (appId instanceof String) {
             appIdHeader = new BasicHeader(appIdKey, (String) appId);
         }
@@ -76,6 +80,7 @@ public class Parse {
             throw new InputMismatchException("The restApi is not a string!");
         }
         contentTypeHeader = new BasicHeader("Content-Type", "application/json");
+        applicationTypeHeader = new BasicHeader("application-type", "REST");
     }
     /**
      * Perform a HTTP GET on a given class with a query string.
@@ -85,11 +90,11 @@ public class Parse {
      * @return              response string from the GET; null if error
      */
     public String get(String className, String queryString) {
-        HttpGet httpGet = new HttpGet(combineUrl(urlBase, className,
-                queryString));
+        HttpGet httpGet = new HttpGet(combineUrl(urlBase, className, queryString));
         httpGet.addHeader(appIdHeader);
         httpGet.addHeader(restApiHeader);
         httpGet.addHeader(contentTypeHeader);
+        httpGet.addHeader(applicationTypeHeader);
         HttpResponse httpResponse = getResponse(httpGet);
         if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
             logger.error("Get did not fetch successfully!");
@@ -106,11 +111,11 @@ public class Parse {
      * @return              response string from the GET; null if error
      */
     public String getObject(String className, String objectId) {
-        HttpGet httpGet = new HttpGet(combineUrl(urlBase, className, "/",
-                objectId));
+        HttpGet httpGet = new HttpGet(combineUrl(urlBase, className, "/", objectId));
         httpGet.addHeader(appIdHeader);
         httpGet.addHeader(restApiHeader);
         httpGet.addHeader(contentTypeHeader);
+        httpGet.addHeader(applicationTypeHeader);
         HttpResponse httpResponse = getResponse(httpGet);
         if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
             logger.error("Get did not fetch successfully!");
@@ -124,6 +129,7 @@ public class Parse {
      *
      * @param className name of class to interact with
      * @param objectId  identifier of the object to edit
+     * @param data      what to set the object value to
      * @return          response string from the PUT; null if error
      */
     public String put(String className, String objectId, String data) {
@@ -132,6 +138,7 @@ public class Parse {
         httpPut.addHeader(appIdHeader);
         httpPut.addHeader(restApiHeader);
         httpPut.addHeader(contentTypeHeader);
+        httpPut.addHeader(applicationTypeHeader);
         try {
             httpPut.setEntity(new StringEntity(data, ContentType.APPLICATION_JSON));
         } catch (Exception e) {
@@ -159,6 +166,7 @@ public class Parse {
         httpPost.addHeader(appIdHeader);
         httpPost.addHeader(restApiHeader);
         httpPost.addHeader(contentTypeHeader);
+        httpPost.addHeader(applicationTypeHeader);
         try {
             httpPost.setEntity(new StringEntity(data, ContentType.APPLICATION_JSON));
         } catch (Exception e) {
@@ -175,12 +183,25 @@ public class Parse {
         return getResponseString(httpResponse);
     }
 
+    /**
+     * <p>
+     *     Data format is likely similar to
+     *     {
+     *         "message": "Message",
+     *         "headers": {"key1": "value1", "key2": "value2"}
+     *     }
+     *     https://backendless.com/documentation/messaging/rest/messaging_message_publishing.htm
+     * </p>
+     * @param json  data sent as a message (default is both push and pub/sub)
+     * @return      response string
+     */
     public String postPush(String json) {
-        final String pushBase = "https://api.parse.com/1/push/";
+        final String pushBase = "https://api.backendless.com/v1/messaging/setlist";
         HttpPost httpPost = new HttpPost(combineUrl(pushBase));
         httpPost.addHeader(appIdHeader);
         httpPost.addHeader(restApiHeader);
         httpPost.addHeader(contentTypeHeader);
+        httpPost.addHeader(applicationTypeHeader);
         try {
             httpPost.setEntity(new StringEntity(json,
                     ContentType.APPLICATION_JSON));
@@ -251,6 +272,10 @@ public class Parse {
 
     /**
      * Mark a single trivia question with a given trivia level.
+     *
+     * @param objectId      the ID of the question to mark
+     * @param triviaLevel   level to set it to
+     * @return              true if successful
      */
     public boolean markAsTrivia(String objectId, int triviaLevel) {
         logger.info("Marking question " + objectId + " to " + triviaLevel);

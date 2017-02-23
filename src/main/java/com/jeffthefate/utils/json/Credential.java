@@ -1,5 +1,8 @@
 package com.jeffthefate.utils.json;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"__updated__meta", "___class", "ownerId", "__meta"})
 public class Credential {
 
     public String getName() {
@@ -21,24 +24,24 @@ public class Credential {
     }
 
     private String value;
-    private String createdAt;
-    private String updatedAt;
+    private String created;
+    private String updated;
     private String objectId;
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getCreated() {
+        return created;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setCreated(String created) {
+        this.created = created;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public String getUpdated() {
+        return updated;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdated(String updated) {
+        this.updated = updated;
     }
 
     public String getObjectId() {
@@ -52,7 +55,7 @@ public class Credential {
     @Override
     public String toString(){
         return "name: " + getName() + ", value: " + getValue() +
-                ", createdAt: " + getCreatedAt() + ", updatedAt: " +
-                getUpdatedAt() + ", objectId: " + getObjectId();
+                ", created: " + getCreated() + ", updated: " +
+                getUpdated() + ", objectId: " + getObjectId();
     }
 }

@@ -1,7 +1,7 @@
 package com.jeffthefate.utils.test;
 
+import com.jeffthefate.utils.Backendless;
 import com.jeffthefate.utils.CredentialUtil;
-import com.jeffthefate.utils.Parse;
 import com.jeffthefate.utils.json.Credential;
 import com.jeffthefate.utils.json.JsonUtil;
 import junit.framework.TestCase;
@@ -18,26 +18,29 @@ public class CredentialUtilTest extends TestCase {
     /**
      * The created Parse object points to the correct application in Parse.
      */
-    public void testGetCredentialedParse() {
-        Parse parse = credentialUtil.getCredentialedParse(false,
-                "D:\\parseCreds");
-        String response = parse.getObject("Credential", "HLQWbSXoTC");
+    public void testGetCredentialedBackendless() {
+        Backendless backendless = credentialUtil.getCredentialedBackendless(false,
+                "/Users/jfate/Google Drive/backendlessCreds.ser");
+        String response = backendless.getObject("Credential", "HLQWbSXoTC");
         Credential credential = jsonUtil.getCredential(response);
         assertEquals("Credential not correct!", credential.getValue(),
                 "dmbtrivia");
-        parse = credentialUtil.getCredentialedParse(true, "D:\\parseCreds");
-        response = parse.getObject("Credential", "IrzaFfj9EQ");
+        /**
+        backendless = credentialUtil.getCredentialedBackendless(true, "/Users/jfate/Google Drive/backendlessCreds.ser");
+        response = backendless.getObject("Credential", "IrzaFfj9EQ");
         credential = jsonUtil.getCredential(response);
         assertEquals("Credential not correct!", credential.getValue(),
                 "dmbtriviatest");
+         */
     }
 
     /**
      * The created Twitter object points to the correct account.
      */
     public void testGetCredentialedTwitter() {
+        /**
         Parse parse = credentialUtil.getCredentialedParse(true,
-                "D:\\parseCreds");
+                "/Users/jfate/Google Drive/backendlessCreds.ser");
         Configuration configuration = credentialUtil.getCredentialedTwitter
                 (parse, false);
         Twitter twitter = new TwitterFactory(configuration).getInstance();
@@ -47,12 +50,12 @@ public class CredentialUtilTest extends TestCase {
         } catch (TwitterException e) {
             e.printStackTrace();
         }
-        parse = credentialUtil.getCredentialedParse(false, "D:\\parseCreds");
-        configuration = credentialUtil.getCredentialedTwitter(parse, false);
-        twitter = new TwitterFactory(configuration).getInstance();
+         */
+        Backendless backendless = credentialUtil.getCredentialedBackendless(false, "/Users/jfate/Google Drive/backendlessCreds.ser");
+        Configuration configuration = credentialUtil.getCredentialedTwitter(backendless, false);
+        Twitter twitter = new TwitterFactory(configuration).getInstance();
         try {
-            assertEquals("Twitter configuration not correct!", 611044728l,
-                    twitter.getId());
+            assertEquals("Twitter configuration not correct!", 611044728l, twitter.getId());
         } catch (TwitterException e) {
             e.printStackTrace();
         }

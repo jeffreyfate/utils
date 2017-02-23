@@ -43,4 +43,7 @@ crashlytics-build.properties
 fabric.properties
 
 # Target
-/target/
+target/*
+
+# Test files
+/test*

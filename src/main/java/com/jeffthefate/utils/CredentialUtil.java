@@ -31,11 +31,10 @@ public class CredentialUtil {
         return credentialUtil;
     }
 
-    public Parse getCredentialedParse(boolean isDev, String credFile) {
-        HashMap<Object, Object> credentialsMap = fileUtil.readHashMapFromFile(
-                credFile);
+    public Backendless getCredentialedBackendless(boolean isDev, String credFile) {
+        HashMap<Object, Object> credentialsMap = fileUtil.readHashMapFromFile(credFile);
         try {
-            return new Parse(isDev ? credentialsMap.get("devAppId") :
+            return new Backendless(isDev ? credentialsMap.get("devAppId") :
                     credentialsMap.get("prodAppId"), isDev ?
                     credentialsMap.get("devRestKey") :
                     credentialsMap.get("prodRestKey"));
@@ -45,7 +44,7 @@ public class CredentialUtil {
         }
     }
 
-    public Configuration getCredentialedTwitter(Parse parse, boolean isGame) {
+    public Configuration getCredentialedTwitter(Backendless backendless, boolean isGame) {
         String SETLIST_KEY = null;
         String SETLIST_SECRET = null;
         String SETLIST_ACCESS_TOKEN = null;
@@ -56,9 +55,8 @@ public class CredentialUtil {
         String GAME_ACCESS_TOKEN = null;
         String GAME_ACCESS_SECRET = null;
         String GAME_ACCOUNT = null;
-        String response = parse.get("Credential", "");
-        List<Credential> credentialList = jsonUtil.getCredentialResults(
-                response).getResults();
+        String response = backendless.get("Credential", "?pageSize=100");
+        List<Credential> credentialList = jsonUtil.getCredentialResults(response).getData();
         for (Credential credential : credentialList) {
             switch(credential.getName()) {
                 case "setlistKey":
